@@ -20,8 +20,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
-    private var activeField: UITextField?
-    private var isUp: Bool = false
     
     private let textFieldDelegate = TextFieldDelegate()
     
@@ -30,11 +28,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         setupTextFields()
-
-//        topTextField.defaultTextAttributes = memeTextAttributes
-//        bottomTextField.defaultTextAttributes = memeTextAttributes
-//        topTextField.textAlignment = .Center
-//        bottomTextField.textAlignment = .Center
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -75,18 +68,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             textFieldArray[i].textAlignment = .Center
             textFieldArray[i].delegate = textFieldDelegate
         }
-//        for i in 0...1 {
-//            
-//            if let meme = self.meme {
-//                i == 0 ? (textFieldArray[i].text = meme.topText) : (textFieldArray[i].text = meme.bottomText)
-//            } else {
-//                i == 0 ? (textFieldArray[i].text = "TOP TEXT") : (textFieldArray[i].text = "BOTTOM TEXT")
-//            }
-//            
-//            textFieldArray[i].textAlignment = .Center
-//            textFieldArray[i].defaultTextAttributes = memeTextAttributes
-//            textFieldArray[i].delegate = textFieldDelegate
-//        }
     }
     
     @IBAction func shareAction(sender: AnyObject) {
@@ -103,8 +84,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func generateMemedImage() -> UIImage {
-        
-        // TODO: Hide toolbar and navbar
+
         navigationBar.hidden = true
         bottomToolbar.hidden = true
         
@@ -115,8 +95,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let memedImage : UIImage =
         UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
-        // TODO:  Show toolbar and navbar
+
         navigationBar.hidden = false
         bottomToolbar.hidden = false
         
@@ -152,23 +131,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         presentViewController(pickerController, animated: true, completion: nil)
     }
     
-    //MARK: - textfield delegate
-    func textFieldDidBeginEditing(textField: UITextField) {
-        if textField.text == "TOP" || textField.text == "BOTTOM" {
-            textField.text = ""
-           
-        }
-//         activeField = textField
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-//        activeField = nil
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
     
     func subscribeToKeyboardNotification() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
@@ -184,30 +146,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if bottomTextField.isFirstResponder() {
             self.view.frame.origin.y -= getKeyboardHeight(notification)
         }
-//        guard !isUp else {
-//            return
-//        }
-//        let kbHeight = getKeyboardHeight(notification)
-////        view.frame.origin.y -= kbHeight
-//        
-//        var aRect : CGRect = view.frame
-//        aRect.size.height -= kbHeight
-//        if let activeField = textField {
-//            if (!CGRectContainsPoint(aRect, activeField!.frame.origin)) {
-//                isUp = true
-//                view.frame.origin.y -= kbHeight
-//            }
-//        }
+
     }
     
     func keyboardWillHide(notification: NSNotification) {
         view.frame.origin.y = 0.0
-//        let kbHeight = getKeyboardHeight(notification)
-//        
-//        if isUp {
-//            isUp = false
-//            view.frame.origin.y += kbHeight
-//        }
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
